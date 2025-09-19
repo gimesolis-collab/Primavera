@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorpresa de Primavera</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f6d9e8;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    /* Estilo del pop-up */
+    #popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #popup-content {
+      background: white;
+      padding: 20px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    button {
+      background: #ffb703;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: white;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #fb8500;
+    }
+
+    /* Contenido sorpresa */
+    #flowers {
+      display: none;
+      margin-top: 50px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    #flowers.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    h1 {
+      color: #fefefd;
+      font-size: 2.5rem;
+      animation: bounce 2s infinite alternate;
+    }
+    img {
+      max-width: 350px;
+      margin-top: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    /* Animación de rebote suave en el título */
+    @keyframes bounce {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-10px); }
+    }
+
+    /* Lluvia de flores */
+    .falling-flower {
+      position: absolute;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      font-size: 24px;
+    }
+
+    /* Animación de rebote suave para la imagen */
+    @keyframes img-bounce {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+    }
+
+    #flowers img {
+    animation: img-bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes fall {
+        0% { 
+        transform: translateY(-500px) rotate(0deg); /* inicia arriba de la pantalla */
+        opacity: 1; 
+      }
+      100% { 
+        transform: translateY(100vh) rotate(360deg); 
+        opacity: 0.8; 
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="popup">
+  <div id="popup-content">
+    <p><strong>Gime te ha enviado una sorpresa 🌼</strong></p>
+    <button onclick="mostrarFlores()">Aceptar</button>
+  </div>
+</div>
+
+<div id="flowers">
+  <h1>🌸 ¡Feliz Primavera! 🌸</h1>
+  <img src="https://us.123rf.com/450wm/yupiramos/yupiramos1704/yupiramos170414668/76364267-ramo-de-flores-icono-de-ilustraci%C3%B3n-vectorial-dise%C3%B1o.jpg?ver=6" alt="Ramo de flores amarillas">
+</div>
+
+<!-- Sonido de pajaritos -->
+<audio id="spring-song" src="primavera.opus" loop></audio>
+
+<script>
+  function mostrarFlores() {
+    // Ocultar pop-up
+    document.getElementById("popup").style.display = "none";
+
+    // Mostrar flores con animación
+    const flores = document.getElementById("flowers");
+    flores.style.display = "block";
+    setTimeout(() => {
+      flores.classList.add("show");
+    }, 50);
+
+    // Crear lluvia de flores con emojis
+    const numFlowers = 30;
+    const emojis = ['🌸','🌺','🌷','💮'];
+
+    for(let i=0; i<numFlowers; i++){
+      const flower = document.createElement('div');
+      flower.classList.add('falling-flower');
+      flower.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+      flower.style.left = Math.random() * window.innerWidth + 'px';
+      flower.style.animationDuration = (5 + Math.random() * 5) + 's';
+      flower.style.fontSize = (20 + Math.random() * 30) + 'px';
+
+      document.body.appendChild(flower);
+    }
+
+    // Reproducir sonido
+    const audio = document.getElementById("spring-song");
+    audio.currentTime = 0;
+    audio.play().catch(err => {
+      console.log("El navegador bloqueó el autoplay:", err);
+    });
+  }
+</script>
+
+</body>
+</html>
